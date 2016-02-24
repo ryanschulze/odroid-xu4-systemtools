@@ -7,9 +7,7 @@ Installation
 -
 The easiest way to deploy the script to an odroid device would be using ansible. There is an [example playbook](example_playbook.yml) included that shows how to change default settings. The simplest deployment using ansible would be `ansible-playbook example_playbook.yml --limit=<odroid IP>` (assuming ansible knows where your inventory file is).
 
-If you don't want to use ansible, just copy the following files to the following destinations on your device, and the configuration example (from the "Configuration" block) to **/etc/default/odroid-fan-control**
-[/etc/init.d/odroid-fan-control](roles/odroid/files/odroid-fan-control.sh)
-[/usr/local/sbin/odroid-fan-control](roles/odroid/files/odroid-fan-control.init)
+If you don't want to use ansible, just copy the following files to the following destinations on your device, and the configuration example (from the "Configuration" block) to **/etc/default/odroid-fan-control**, [/etc/init.d/odroid-fan-control](roles/odroid/files/odroid-fan-control.sh), [/usr/local/sbin/odroid-fan-control](roles/odroid/files/odroid-fan-control.init)
 
 Configration
 -
@@ -26,7 +24,7 @@ odroid_config_min_temp:       55
 odroid_config_max_temp:       80
 ```
 |option | description |
-|--|--|
+|---|---|
 | odroid_config_verbose | Sends output to syslog |
 | odroid_config_debug | Sends output to stdout |
 | odroid_config_led | Turn the (blue) LED on when the fan is on |
