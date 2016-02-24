@@ -1,0 +1,95 @@
+#! /bin/sh
+### BEGIN INIT INFO
+# Provides:          odroid-fan-control
+# Required-Start:    $remote_fs $syslog
+# Required-Stop:     $remote_fs $syslog
+# Default-Start:     2 3 4 5
+# Default-Stop:      0 1 6
+# Short-Description: Set fan speed depending on system temperature
+# Description:       MOnitor the system temperature and set fan speed accordingly
+### END INIT INFO
+
+# Author: Ryan Schulze <ryan@ryanschulze.net>
+
+# PATH should only include /usr/* if it runs after the mountnfs.sh script
+PATH=/sbin:/usr/sbin:/bin:/usr/bin:/usr/local/sbin
+DESC="odroid-fan-control"
+NAME='odroid-fan-control'
+DAEMON=/usr/local/sbin/$NAME
+DAEMON_ARGS=
+PIDFILE=/var/run/$DESC.pid
+SCRIPTNAME=/etc/init.d/$NAME
+
+# Exit if the package is not installed
+[ -x "$DAEMON" ] || exit 0
+
+# Load the VERBOSE setting and other rcS variables
+. /lib/init/vars.sh
+
+# Define LSB log_* functions.
+# Depend on lsb-base (>= 3.2-14) to ensure that this file is present
+# and status_of_proc is working.
+. /lib/lsb/init-functions
+
+#
+# Function that stops the daemon/service
+#
+do_start()
+{
+	${DAEMON} &
+}
+
+#
+# Function that stops the daemon/service
+#
+do_stop()
+{
+	[ -e ${PIDFILE} ] && kill "$(cat "${PIDFILE}")"
+	rm ${PIDFILE} 2>/dev/null
+}
+
+case "$1" in
+	start)
+		[ "$VERBOSE" != no ] && log_daemon_msg "Starting $DESC" "$NAME"
+		do_start
+		case "$?" in
+			0) [ "$VERBOSE" != no ] && log_end_msg 0 ;;
+			1|2) [ "$VERBOSE" != no ] && log_end_msg 1 ;;
+		esac
+		;;
+	stop)
+		[ "$VERBOSE" != no ] && log_daemon_msg "Stopping $DESC" "$NAME"
+		do_stop
+		case "$?" in
+			0) [ "$VERBOSE" != no ] && log_end_msg 0 ;;
+			1|2) [ "$VERBOSE" != no ] && log_end_msg 1 ;;
+		esac
+		;;
+	status)
+		[ -e ${PIDFILE} ] && exit 0 || exit 1
+		;;
+	restart)
+		log_daemon_msg "Restarting $DESC" "$NAME"
+		do_stop
+		case "$?" in
+			0)
+				sleep 3
+				do_start
+				case "$?" in
+					0) log_end_msg 0 ;;
+					*) log_end_msg 1 ;; # Failed to start
+				esac
+			;;
+			*)
+				# Failed to stop
+				log_end_msg 1
+			;;
+		esac
+	;;
+	*)
+	echo "Usage: $SCRIPTNAME {start|stop|restart}" >&2
+	exit 3
+	;;
+esac
+
+:

@@ -1,0 +1,14 @@
+---
+
+- name: Odroid configuration
+  hosts: all
+  vars:
+    - odroid_config_min_fan_active: 60
+    - odroid_config_min_speed:      150
+    - odroid_config_max_speed:      255
+    - odroid_config_min_temp:       50
+    - odroid_config_max_temp:       80
+    - odroid_config_led:            'true'
+  roles:
+    - odroid
+

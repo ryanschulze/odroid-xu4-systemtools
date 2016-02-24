@@ -1,0 +1,29 @@
+## Default settings for odroid-fan-control. This file is sourced by /bin/sh from
+# /etc/init.d/odroid-fan-control.
+
+# Output status messages to syslog
+FAN_VERBOSE={{ odroid_config_verbose }}
+
+# Output status messages to stdout
+FAN_DEBUG={{ odroid_config_debug }}
+
+# Turn on LED when fan is on
+FAN_LED={{ odroid_config_led }}
+
+# how often to check the temperature (in seconds)
+CONFIG_CHECK_INTERVAL={{ odroid_config_check_interval }}
+
+# if fan turns on, leave it on for at least x seconds
+CONFIG_MIN_FAN_ACTIVE={{ odroid_config_min_fan_active }}
+
+# minimum fan speed (when on)
+CONFIG_MIN_SPEED={{ odroid_config_min_speed }}
+
+# maximum fan speed
+CONFIG_MAX_SPEED={{ odroid_config_max_speed }}
+
+# temperature when we turn the fan on
+CONFIG_MIN_TEMP={{ odroid_config_min_temp }}
+
+# temperature where we hit maximum fan speed
+CONFIG_MAX_TEMP={{ odroid_config_max_temp }}

@@ -1,0 +1,30 @@
+---
+#-------------------------------------------------------------------------------
+# odroid/defaults/main.yml
+#
+# Default settings for odroid
+# Ensure variables are set, settings for stuff that can be changed by playbooks
+#-------------------------------------------------------------------------------
+
+odroid_config_verbose:        'true'
+odroid_config_debug:          'false'
+odroid_config_led:            'false'
+odroid_config_check_interval: 2
+odroid_config_min_fan_active: 15
+odroid_config_min_speed:      80
+odroid_config_max_speed:      255
+odroid_config_min_temp:       55
+odroid_config_max_temp:       80
+
+odroid_dirs:
+  - { path: '/opt/odroid_cpu_control',      owner: 'root',  group: 'root', mode: '0750' }
+
+odroid_files:
+  - { local: 'odroid-fan-control.sh',       remote: '/usr/local/sbin/odroid-fan-control', owner: 'root',  group: 'root', mode: '0750' }
+  - { local: 'odroid-fan-control.init',     remote: '/etc/init.d/odroid-fan-control',     owner: 'root',  group: 'root', mode: '0750' }
+
+odroid_templates:
+  - { local: 'odroid-fan-control.defaults', remote: '/etc/default/odroid-fan-control',    owner: 'root',  group: 'root', mode: '0644' }
+
+odroid_links:
+  - { src: '/opt/odroid_cpu_control/odroid-cpu-control', dest: '/usr/local/sbin/odroid-cpu-control' }

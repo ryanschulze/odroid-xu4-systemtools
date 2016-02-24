@@ -1,0 +1,42 @@
+---
+#-------------------------------------------------------------------------------
+# odroid/tasks/main.yml
+#
+# Tasks for odroid
+#-------------------------------------------------------------------------------
+
+- name: Role specific directories
+  file: path={{ item.path }} owner={{ item.owner }} group={{ item.group }} mode={{ item.mode }} state=directory
+  with_items: odroid_dirs
+  tags:
+    - filesystem
+
+- name: Role specific files
+  copy: src={{ item.local }} dest={{ item.remote }} owner={{ item.owner }} group={{ item.group }} mode={{ item.mode }}
+  with_items: odroid_files
+  tags:
+    - filesystem
+
+- name: Role specific files (templates)
+  template: src={{ item.local }} dest={{ item.remote }} owner={{ item.owner }} group={{ item.group }} mode={{ item.mode }}
+  with_items: odroid_templates
+  tags:
+    - filesystem
+
+- name: Role specific symlinks
+  file: src={{ item.src }} dest={{ item.dest }} state=link force=yes
+  with_items: odroid_links
+  tags:
+    - filesystem
+
+- name: Switch LED to manual
+  shell: echo none > /sys/devices/leds.14/leds/blue\:heartbeart/trigger
+  changed_when: false
+  when: odroid_config_led == 'true'
+
+- name: enable fan control service
+  service: name=odroid-fan-control enabled=yes state=started
+    
+- name: script to control cpu settings
+  git: repo=https://github.com/mad-ady/odroid-cpu-control.git depth=1 dest=/opt/odroid_cpu_control
+
